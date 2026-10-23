@@ -1,0 +1,20 @@
+name: Build launcher
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: pyinstaller --onefile --windowed --name SimpleLauncher --collect-all minecraft_launcher_lib simple_launcher.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SimpleLauncher
+          path: dist/SimpleLauncher.exe
